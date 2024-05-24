@@ -39,8 +39,8 @@ class CreateContactRequest extends FormRequest
         $data = [
          'user_id' => auth()->user()->id,
          'name' =>  $request->name,
-         'email' =>  $request->email ? $request->email : null,
-         'phone' => $request->phone ? $request->phone : null,
+         'email' =>  $request->email ??  null,
+         'phone' => $request->phone ?? null,
         ];
 
          $contact = Contact::updateOrCreate(
