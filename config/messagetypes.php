@@ -12,5 +12,5 @@
     */
 
 return [
-    'types' => ['sms', 'email'],
+    'types' => ['sms', 'email'], //'urgent'
 ];

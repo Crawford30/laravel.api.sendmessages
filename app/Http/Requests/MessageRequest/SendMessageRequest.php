@@ -35,7 +35,7 @@ class SendMessageRequest extends FormRequest
 
     public function saveMessage($request){
         $data = [
-         'user_id' => auth()->user()->id,
+         'user_id' => $request->user_id,
          'contact_id' => $request->contact_id,
          'type' => $request->type,
          'message_content' => $request->message_content,
@@ -46,8 +46,7 @@ class SendMessageRequest extends FormRequest
              $data
         );
 
-        //====Send Message Here After Saving It=====
-
+        //====Send Message Here After Saving
 
      return apiResponse([$messageData], 201);
 

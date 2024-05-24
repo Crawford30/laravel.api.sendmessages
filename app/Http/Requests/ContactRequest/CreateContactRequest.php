@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ContactRequest;
 
 use App\Models\Contact;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateContactRequest extends FormRequest
@@ -25,7 +26,6 @@ class CreateContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'name' => 'required|string',
             'email' => 'nullable|email',
             'phone' => 'nullable|string',
@@ -33,10 +33,23 @@ class CreateContactRequest extends FormRequest
 
     }
 
-    public function saveContact($request){
-        $contact = Contact::create($request->all());
-        return apiResponse($contact, 201);
-    }
 
+
+    public function saveContact($request){
+        $data = [
+         'user_id' => auth()->user()->id,
+         'name' =>  $request->name,
+         'email' =>  $request->email ? $request->email : null,
+         'phone' => $request->phone ? $request->phone : null,
+        ];
+
+         $contact = Contact::updateOrCreate(
+            ['id' => $this->id],
+             $data
+        );
+
+        return apiResponse($contact, 201);
+
+ }
 
 }

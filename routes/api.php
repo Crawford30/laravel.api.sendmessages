@@ -37,17 +37,16 @@ Route::group(['namespace' => 'Api', 'middleware' => 'return-json'], function () 
 
 
     //======Manage Messages ====
-    Route::group(['prefix' => 'message'], function () {
+    Route::group(['prefix' => 'message',  'middleware' => 'auth:api'], function () {
         Route::post('/send-message', [MessageController::class, 'sendMessage']);
 
     });
 
     //======Manage Contacts ====
-    Route::group(['prefix' => 'contact'], function () {
+    Route::group(['prefix' => 'contact',  'middleware' => 'auth:api'], function () {
         Route::post('/save-contact', [ContactController::class, 'saveContactDetails']);
 
     });
-
 
 
 });
