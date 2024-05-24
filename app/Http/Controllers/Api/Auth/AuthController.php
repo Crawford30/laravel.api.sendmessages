@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -25,10 +29,10 @@ class AuthController extends Controller
             return $this->proceedToLogin($user);
         }
 
-        return apiResponse(['message' => 'Wrong Credentials'], 401);
+        return response()->json(['message' => 'Wrong Credentials'], 401);
 
         }else{
-            return apiResponse(['message' => 'Wrong Credentials'], 401);
+         return response()->json(['message' => 'Wrong Credentials'], 401);
 
         }
     }
@@ -44,7 +48,7 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
             $token->save();
 
-            return apiResponse([
+            return response()->json([
                 'message' => "API_MESSAGE_PASS",
                 'user' => auth()->user(),
                 'token' => $tokenResult->accessToken,
@@ -52,7 +56,7 @@ class AuthController extends Controller
                 'expires_at' => Carbon::parse(
                     $tokenResult->token->expires_at
                 )->toDateTimeString()
-            ]);
+            ], 200);
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
@@ -70,7 +74,7 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('API Token')->accessToken;
-        return apiResponse(['user' => $user, 'token' => $token]);
+        return response()->json(['user' => $user, 'token' => $token]);
     }
 
 
@@ -78,6 +82,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
       $user = Auth::logout();
-      return apiResponse("Successfully logged out");
+      return response()->json(["Successfully logged out"], 200);
     }
 }
