@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Contacts\ContactController;
+use App\Http\Controllers\Api\Messages\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,16 +36,17 @@ Route::group(['namespace' => 'Api', 'middleware' => 'return-json'], function () 
     });
 
 
-    // //======Manage Paients ====
-    // Route::group(['prefix' => 'patient'], function () {
-    //     Route::post('/patients', [PatientController::class, 'createPatient']);
-    //     Route::post('/activate-deactivate', [PatientController::class, 'activateAndDeactivatePaitentData']);
-    //     Route::post('/delete-patient', [PatientController::class, 'deletePatient']);
-    // });
+    //======Manage Messages ====
+    Route::group(['prefix' => 'message'], function () {
+        Route::post('/send-message', [MessageController::class, 'sendMessage']);
 
+    });
 
+    //======Manage Contacts ====
+    Route::group(['prefix' => 'contact'], function () {
+        Route::post('/save-contact', [ContactController::class, 'saveContactDetails']);
 
-
+    });
 
 
 

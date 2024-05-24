@@ -23,16 +23,15 @@ class AuthController extends Controller
 
         $user = User::where("email", $request->email)->first();
 
-        if($user){
-
+     if($user){
         if(Hash::check($request->password, $user->password)) {
             return $this->proceedToLogin($user);
         }
 
-        return response()->json(['message' => 'Wrong Credentials'], 401);
+        return apiResponse(['message' => 'Wrong Credentials'], 401);
 
         }else{
-         return response()->json(['message' => 'Wrong Credentials'], 401);
+         return apiResponse(['message' => 'Wrong Credentials'], 401);
 
         }
     }
@@ -48,7 +47,7 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
             $token->save();
 
-            return response()->json([
+            return apiResponse([
                 'message' => "API_MESSAGE_PASS",
                 'user' => auth()->user(),
                 'token' => $tokenResult->accessToken,
@@ -56,7 +55,7 @@ class AuthController extends Controller
                 'expires_at' => Carbon::parse(
                     $tokenResult->token->expires_at
                 )->toDateTimeString()
-            ], 200);
+            ], 201);
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
@@ -74,7 +73,7 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('API Token')->accessToken;
-        return response()->json(['user' => $user, 'token' => $token]);
+        return apiResponse(['user' => $user, 'token' => $token], 201);
     }
 
 
@@ -82,6 +81,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
       $user = Auth::logout();
-      return response()->json(["Successfully logged out"], 200);
+      return apiResponse(["Successfully logged out"]);
     }
 }
