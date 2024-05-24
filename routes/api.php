@@ -36,17 +36,36 @@ Route::group(['namespace' => 'Api', 'middleware' => 'return-json'], function () 
     });
 
 
+//OPEN API ENDPOINTS FOR DEVELOPMENT
+
+//======Get All Messages
+Route::group(['prefix' => 'message'], function () {
+    Route::get('/all-messages', [MessageController::class, 'getAllMessages']);
+
+});
+
+//======Get All  Contacts ====
+Route::group(['prefix' => 'contact'], function () {
+    Route::get('/all-contacts', [ContactController::class, 'getAllContacts']);
+
+});
+
+
+
+Route::group(['middleware' => 'auth:api'], function () {
     //======Manage Messages ====
-    Route::group(['prefix' => 'message',  'middleware' => 'auth:api'], function () {
+    Route::group(['prefix' => 'message'], function () {
         Route::post('/send-message', [MessageController::class, 'sendMessage']);
 
     });
 
     //======Manage Contacts ====
-    Route::group(['prefix' => 'contact',  'middleware' => 'auth:api'], function () {
+    Route::group(['prefix' => 'contact'], function () {
         Route::post('/save-contact', [ContactController::class, 'saveContactDetails']);
 
     });
+
+});
 
 
 });
